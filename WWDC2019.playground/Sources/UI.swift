@@ -13,6 +13,7 @@ public class UI {
     var buttonNode = SKNode()
     let view = SKView(frame: CGRect(x: 0, y: 0, width: 500, height: 500))
     var scene = 1
+    var time = 0.0
     //MARK: Basic Nodes Initalization
     let content = SKNode()
     var titlePic = SKSpriteNode(texture: SKTexture(imageNamed: "Images/titlePic"))
@@ -80,15 +81,35 @@ public class UI {
         for message in messages[scene]{
             let bubble = createChatBubble(message)
             self.msgs.append(bubble)
+            bubble.alpha = 0.0
+            bubble.run(SKAction.sequence([SKAction.wait(forDuration: time), SKAction.fadeIn(withDuration: 0.5)]))
+            time += 3.0
         }
         
+    }
+    func showIndicator(_ classification: Classification) -> SKLabelNode{
+        switch classification {
+        case .harmOthers:
+            return createIndicatorNode(text: "User is likely to harm others.")
+        case .harmSelf:
+            return createIndicatorNode(text: "User is likely to harm themselves.")
+        case .harmUser:
+            return createIndicatorNode(text: "Someone might be harming the user.")
+        default:
+            return createIndicatorNode(text: "Moneo has identified no indicators.")
+        }
+    }
+    func createIndicatorNode(text: String) -> SKLabelNode{
+        let label = SKLabelNode(text: text)
+        label.fontSize = 14.0
+        label.fontColor = .white
+        label.alpha = 0.4
+        return label
     }
     func createPg1(){
         createChatWindow()
 //        let bubble1 = createChatBubble(msg(text: "Hi! How are you today?", resource: nil, sender: .moneo))
 //        self.msgs.append(bubble1)
-//        let bubble2 = createChatBubble(msg(text: "I feel empty, and I want to kill myself more than I have in a while but I don't have the energy. All I want to do is disappear and never come back.", resource: nil, sender: .user))
-//        self.msgs.append(bubble2)
 //        let bubble3 = createChatBubble(msg(text: "I’m so sorry to hear about this. Here are some resrouces that might be helpful: ", resource: nil, sender: .moneo))
 //        self.msgs.append(bubble3)
 //        let bubble4 = createChatBubble(msg(text: "Call 800-273-8255 to speak with a trained counselor.", resource: "National Suicide Prevention Lifeline", sender: .moneo))
@@ -171,7 +192,6 @@ public class UI {
         bubble.position = CGPoint(x: 0, y: 0)
         bubble.addChild(textLb)
         
-        
         var senderLb = SKLabelNode(fontNamed: UIFont.systemFont(ofSize: 10.0, weight: .regular).fontName)
         senderLb.position = CGPoint(x: 15, y: bubble.frame.maxY + 5)
         senderLb.text = "User"
@@ -182,19 +202,20 @@ public class UI {
         senderLb.fontSize = 10.0
         senderLb.fontColor = .white
         
-       //let chatBubble = SKNode()
+        let chatBubble = SKNode()
         var y = CGFloat(425.0)
         if(self.msgs.count > 0) {
             y = msgs.last!.frame.minY - CGFloat(100.0)
         }
-        bubble.position = CGPoint(x: 115, y: y)
+        chatBubble.position = CGPoint(x: 115, y: y)
         if msg.sender == .moneo {
-            bubble.position = CGPoint(x: (200 - (bubble.frame.width)) + 200, y: y)
+            chatBubble.position = CGPoint(x: (195 - (bubble.frame.width)) + 195, y: y)
         }
-        //chatBubble.addChild(senderLb)
-       // chatBubble.addChild(bubble)
-        self.content.addChild(bubble)
-        return bubble
+  
+        chatBubble.addChild(senderLb)
+        chatBubble.addChild(bubble)
+        self.content.addChild(chatBubble)
+        return chatBubble
     }
     @objc func next(){
         switch scene {
@@ -203,20 +224,23 @@ public class UI {
             self.subtitle.run(SKAction.fadeOut(withDuration: 0.5))
             self.warning.run(SKAction.fadeOut(withDuration: 0.5))
             self.titlePic.run(SKAction.fadeOut(withDuration: 0.5))
-            self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.wait(forDuration: 0.5),
-                SKAction.fadeIn(withDuration: 0.5)]))
+          
             let action = SKAction.run {
                 self.createScene(0)
             }
+            self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.wait(forDuration: 12),
+                                                   SKAction.fadeIn(withDuration: 0.5)]))
             self.content.run(SKAction.sequence([SKAction.wait(forDuration: 0.5), action]))
+            
         case 2:
             for msg in self.msgs {
                 msg.run(SKAction.fadeOut(withDuration: 0.5))
             }
-            self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.wait(forDuration: 0.5),
+            self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.wait(forDuration: 12.0),
                                                    SKAction.fadeIn(withDuration: 0.5)]))
             let action = SKAction.run {
-                self.createPg2()
+                self.time = 0.0
+                self.createScene(1)
             }
             self.content.run(SKAction.sequence([SKAction.wait(forDuration: 0.5), action]))
             msgs = []
@@ -224,10 +248,11 @@ public class UI {
             for msg in self.msgs {
                 msg.run(SKAction.fadeOut(withDuration: 0.5))
             }
-            self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.wait(forDuration: 0.5),
+            self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.wait(forDuration: 12.0),
                                                    SKAction.fadeIn(withDuration: 0.5)]))
             let action = SKAction.run {
-                self.createPg3()
+                self.time = 0.0
+                self.createScene(2)
             }
             self.content.run(SKAction.sequence([SKAction.wait(forDuration: 0.5), action]))
             msgs = []
@@ -235,10 +260,11 @@ public class UI {
             for msg in self.msgs {
                 msg.run(SKAction.fadeOut(withDuration: 0.5))
             }
-            self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.wait(forDuration: 0.5),
+            self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.wait(forDuration: 12.0),
                                                    SKAction.fadeIn(withDuration: 0.5)]))
             let action = SKAction.run {
-                self.createPg4()
+                self.time = 0.0
+                self.createScene(3)
             }
             self.content.run(SKAction.sequence([SKAction.wait(forDuration: 0.5), action]))
             msgs = []
