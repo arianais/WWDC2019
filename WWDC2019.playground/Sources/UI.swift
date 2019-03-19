@@ -70,8 +70,8 @@ public class UI {
             self.buttonNode = SKButtonNode(texture: SKTexture(imageNamed: "Images/button")) {
                 self.next()
             }
-            self.buttonNode.setScale(1/2)
-            self.buttonNode.position = CGPoint(x: 460, y: 250)
+            self.buttonNode.setScale(1/3)
+            self.buttonNode.position = CGPoint(x: 450, y: 250)
             self.content.addChild(self.buttonNode)
         }
         
@@ -179,7 +179,6 @@ public class UI {
         if msg.sender == .moneo {
             textLb.fontColor = self.darkBlue
         }
-        print("TEXT LB ", textLb.frame.width)
         textLb.position = CGPoint(x: (textLb.frame.width/2) + 10, y: (textLb.frame.height/2) + 10)
         textLb.horizontalAlignmentMode = .center
         textLb.verticalAlignmentMode = .center
