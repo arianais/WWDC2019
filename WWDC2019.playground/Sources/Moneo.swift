@@ -19,11 +19,24 @@ public class Moneo {
   
     }
     public func displayConversation(_ messages: [Message]){
-        
+        ui.messages.append(messages)
     }
 }
 
 public struct Message{
+    public var text: String
+    public var title: String?
+    public var sender: Sender
+    public var classification: Classification?
+    public init(text: String, title: String?, sender: Sender, classification: Classification?) {
+        self.text = text
+        self.title = title
+        self.sender = sender
+        self.classification = classification
+    }
+}
+
+public struct msg{
     public var text: String
     public var resource: String?
     public var sender: Sender
@@ -32,6 +45,12 @@ public struct Message{
         self.resource = resource
         self.sender = sender
     }
+}
+public enum Classification{
+    case harmSelf
+    case harmOthers
+    case harmUser
+    case other
 }
 public enum Sender{
     case user
