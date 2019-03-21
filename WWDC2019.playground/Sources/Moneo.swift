@@ -1,20 +1,17 @@
 import Foundation
 public class Moneo {
-    public var primarySuicideResource = Resource(name: "", contactInfo: "")
-    public var secondarySuicideResource = Resource(name: "", contactInfo: "")
-    public var primaryAbuseResource = Resource(name: "", contactInfo: "")
-    public var secondaryAbuseResource = Resource(name: "", contactInfo: "")
-    public var primaryMentalHealthResource = Resource(name: "", contactInfo: "")
-    public var secondaryMentalHealthResource = Resource(name: "", contactInfo: "")
+    public var suicideResource = Resource(name: "", contactInfo: "")
+    public var mentalHealthResource = Resource(name: "", contactInfo: "")
+    public var domesticViolenceResource = Resource(name: "", contactInfo: "")
+    public var sexualAssaultResource = Resource(name: "", contactInfo: "")
     public var primaryCrisisResource = Resource(name: "", contactInfo: "")
     public var secondaryCrisisResource = Resource(name: "", contactInfo: "")
     
-    public let test1 = "I feel empty, and I want to kill myself more than I have in a while but I don't have the energy. All I want to do is disappear and never come back."
-    public let test2 =  "I’m going bonkers at my parents’ house because they’re so transphobic and abusive and I can’t take this anymore."
-    public let test3 = "I have these fantasies of just killing or torturing those who have wronged me or others, it feels good to think about..."
-    public let test4 = "I'm feeling okay, but not that great though."
+    public let test1 = "I feel empty. All I want to do is disappear and never come back."
+    public let test2 =  "i feel like im going bonkers at my parents’ house because they’re so transphobic and abusive and i can’t take this anymore"
+    public let test3 = "I'm feeling pretty good. Better than yesterday."
     
-    private var ui = UI()
+    public var ui = UI()
     public init(){
   
     }
@@ -48,7 +45,6 @@ public struct msg{
 }
 public enum Classification{
     case harmSelf
-    case harmOthers
     case harmUser
     case other
 }

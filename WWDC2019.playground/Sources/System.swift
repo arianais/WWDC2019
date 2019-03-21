@@ -8,5 +8,8 @@ public class System{
     }
     public func saveProject(_ project: Moneo){
         self.moneo = project
+        self.moneo.ui.superhero = self.superhero
+        self.moneo.ui.agent = self.agent
+        self.moneo.ui.setTitlePage()
     }
 }
