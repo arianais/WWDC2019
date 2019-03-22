@@ -42,10 +42,10 @@ During this training session, you will be tasked with creating a technological s
  1. **What is an example of a mental health crisis?** You’re getting ready to meet up with your friend Jill when she tells you she has to bail. You ask, “Is something wrong?” She responds, “Just not feeling life today.” You tell Jill you are coming over to her house, where you find Jill crying. She tells you, “Life is too hard.”
  2. **How should you help people in these events?** First, practice clear communication -- it is essential they feel heard and understood and use an empathetic, non-judgmental tone. Second, reach out for help. If you feel that you are not able to de-escalate the person in crisis without additional support, call someone or connect the individual with a crisis resource.
  
- In the interview, the expert said a possible solution in these situations is connecting an individuals in crisis to mental health resoures. Research and find 1 local hotline or textline that support individuals dealing expierencing each of the following: suicide, abuse, mental illness, and crisis. After, set the following variables to equal these resources: `primarySuicideResource`, `primaryAbuseResource`, `primaryMentalHealthResource`, and `primaryCrisisResource`.
+ In the interview, the expert said a possible solution in these situations is connecting an individuals in crisis to mental health resoures. Research and find 1 local hotline or textline that support individuals dealing expierencing each of the following: suicide, abuse, mental illness, and crisis. After, set the following variables to equal these resources: `suicideResource`, `mentalHealthResource`, `domesticViolenceResource`, `sexualAssaultResource`, `primaryCrisisResource`, and `secondaryCrisisResource`.
  - Example:
  ```
-let primarySuicideResource = Resource(name: "National Suicide Prevention Lifeline", contactInfo: "Call 800-273-8255 to speak with a trained counselor.")
+let suicideResource = Resource(name: "National Suicide Prevention Lifeline", contactInfo: "Call 800-273-8255 to speak with a trained counselor.")
  ```
  */
 let suicideResource = Resource(name: "National Suicide Prevention Lifeline", contactInfo: "Call 800-273-8255 to speak with a trained counselor.")
@@ -70,10 +70,10 @@ In this mission, you will be creating a prototype of a chatbot named Moneo that 
 */
 let moneo = Moneo()
 /*:
-Enter all of the resources you found previously into Moneo's system by setting `moneo.primarySuicideResource`, `moneo.primarySuicideResource`, `moneo.primaryAbuseResource`,`moneo.primaryMentalHealthResource`, and `moneo.primaryCrisisResource` equal to the respective resources defined in Stage 2.
+Enter all of the resources you found previously into Moneo's system by setting `suicideResource`, `moneo.mentalHealthResource`, `moneo.domesticViolenceResource`, `moneo.sexualAssaultResource`, `moneo.primaryCrisisResource`, and `moneo.secondaryCrisisResource` equal to the respective resources defined in Stage 2.
  - Example:
  ```
-moneo.primarySuicideResource = primarySuicideResource
+moneo.suicideResource = suicideResource
  ```
  */
 moneo.suicideResource = suicideResource
@@ -115,7 +115,7 @@ func findResources(_ text: String) -> [Resource] {
 Fill in the `switch` statment bellow to return an array Moneo's corresponding secondary and primary crisis resoures with the classifcations determined.
  - Example:
  ```
-return [moneo.primarySuicideResource, moneo.secondarySuicideResource]
+return [moneo.suicideResource, moneo.mentalHealthResource]
  ```
 */
     switch classify(text) {
