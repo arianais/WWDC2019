@@ -19,10 +19,14 @@ public class UI {
     let view = SKView(frame: CGRect(x: 0, y: 0, width: 500, height: 500))
     //MARK: Basic Nodes Initalization
     let content = SKNode()
-    var titlePic = SKSpriteNode(texture: SKTexture(imageNamed: "Images/titlePic"))
+    //MARK: Narrative Nodes Initalization
     var mainPic = SKSpriteNode(texture: SKTexture(imageNamed: "Images/pg1"))
+    var bubble = SKShapeNode()
+    var bubbleText = SKLabelNode()
+    var narrative = ["Once upon a time, there was a creator who had a knack for tinkering and innovating behind a pixelated screen.", "One day this creator got a text asking if they would like to join the Appvengers — a secret team of elite technical superheroes determined to use their powers to improve the world with technology.", "The creator happily accepted and became a superhero.", "This hero's first training mission was the Moneo Mission. The required the superhero to create a piece of technology to help those experiencing a mental health crisis, or those needing immediate mental health care. The superhero decided to start this mission by interviewing those who had experienced this issue in her community.", "After conducting many interviews, the superhero used the information gathered to generate a flurry of possible solutions. Looking at the wall covered in sticky notes, the superhero began to see one idea glistening through the clutter.", "After seeing that this idea was the one, the superhero got to work and began to use their superpowers to create the chatbot.", "Some time later, the superhero finished a prototype of Moneo — a chatbot that refered individuals in a mental health crisis to needed helplines and resources.", "Then the superhero shared Moneo with their community and was amazed to see how appreaciative others were of the technology that they had created.", "The superhero flew back that day to their laptop eager to use their superpowers to create more good in their community.", "The End :)"]
     //MARK:Title Page Nodes Initalization
     var title = SKLabelNode()
+    var titlePic = SKSpriteNode(texture: SKTexture(imageNamed: "Images/titlePic"))
     var subtitle = SKLabelNode()
     var warning = SKLabelNode()
     //MARK: Chat Window Nodes Initalization
@@ -63,14 +67,14 @@ public class UI {
                 self.content.addChild(self.title)
             }
             DispatchQueue.main.async {
-                self.subtitle.attributedText = self.centerAlign("The Amazing \(self.superhero) Vol. 1", 14.0)
+                self.subtitle.attributedText = self.centerAlign("The Amazing \(self.superhero) Vol. 1", 14.0, .white)
                 self.subtitle.preferredMaxLayoutWidth = 400
                 self.subtitle.numberOfLines = 0
                 self.subtitle.position = CGPoint(x: 250, y: 425)
                 self.content.addChild(self.subtitle)
             }
             DispatchQueue.main.async {
-                self.warning.attributedText = self.centerAlign("*This demo contains content relating to suicide, abuse, and violence that may be triggering to others.", 10.0)
+                self.warning.attributedText = self.centerAlign("*This demo contains content relating to suicide, abuse, and violence that may be triggering to others.", 10.0, .white)
                 self.warning.preferredMaxLayoutWidth = 300
                 self.warning.numberOfLines = 0
                 self.warning.position = CGPoint(x: 250, y: 10)
@@ -84,20 +88,64 @@ public class UI {
                 self.buttonNode.position = CGPoint(x: 450, y: 250)
                 self.content.addChild(self.buttonNode)
             }
+            DispatchQueue.main.async {
+                if(self.agent != "" && self.self.superhero != ""){
+                    self.narrative[0] = "Once upon a time, there was a creator named \(self.agent) who had a knack for tinkering and innovating behind a pixelated screen."
+                    self.narrative[1] = "One day \(self.agent) got a text asking if they would like to join the Appvengers — a secret team of elite technical superheroes determined to use their powers to improve the world with technology."
+                    self.narrative[2] = "\(self.agent) happily accepted and became \(self.superhero)."
+                    self.narrative[3] = "\(self.superhero) first training mission as a superhero was the Moneo Mission. The Mission tasked \(self.superhero) with creating a piece of technology to help those experiencing a mental health crisis, or those needing immediate mental health care. \(self.superhero) decided to start this mission by interviewing those who had experienced this issue in her community."
+                    self.narrative[4] = "After conducting many interviews, \(self.superhero) used the information gathered to generate a flurry of possible solutions. Looking at the wall covered in sticky notes, \(self.superhero) began to see one idea glistening through the clutter."
+                    self.narrative[5] = "After seeing that this idea was the one, \(self.superhero) got to work and began to use their superpowers to create the idea detailed on the sticky note."
+                    self.narrative[6] = "Some time later, \(self.superhero) finished a prototype of Moneo — a chatbot that refered individuals in a mental health crisis to needed helplines and resources."
+                    self.narrative[7] = "Then \(self.superhero) shared Moneo with their community and was amazed to see how appreaciative others were of the technology that they had created."
+                    self.narrative[8] = "\(self.superhero) flew back that day to their laptop eager to use their superpowers to create more good in their community."
+                }
+            }
+            DispatchQueue.main.async {
+                self.bubbleText.fontSize = 12.0
+                self.bubbleText.fontName = UIFont.systemFont(ofSize: 12.0, weight: .regular).fontName
+                self.bubbleText.fontColor = self.darkBlue
+                self.bubbleText.preferredMaxLayoutWidth = 430
+                self.bubbleText.numberOfLines = 0
+            }
+            
         }
         
     }
     func createPictureScene(_ scene: Int){
+        print("SCENE", scene)
         DispatchQueue.main.async {
             if(self.scene == 1){
                 self.mainPic.run(SKAction.sequence([SKAction.animate(withNormalTextures: [SKTexture(imageNamed: "Images/pg\(scene)")], timePerFrame: 0.5), SKAction.fadeIn(withDuration: 0.5)]))
             } else {
-                  self.mainPic.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.animate(withNormalTextures: [SKTexture(imageNamed: "Images/pg\(scene)")], timePerFrame: 0.5), SKAction.fadeIn(withDuration: 0.5)]))
+                self.mainPic.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.animate(with: [SKTexture(imageNamed: "Images/pg\(scene)")], timePerFrame: 0.1), SKAction.fadeIn(withDuration: 0.5)]))
             }
         }
+        DispatchQueue.main.async {
+            self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5),
+                                                   SKAction.fadeIn(withDuration: 0.5)]))
+        }
+        DispatchQueue.main.async {
+        let action = SKAction.run {
+                self.bubbleText.removeFromParent()
+                self.bubble.removeFromParent()
+                self.bubbleText.text = self.narrative[scene - 1]
+        
+                self.bubbleText.position = CGPoint(x: 0 , y: -(self.bubbleText.frame.height/2.0))
+                
+                self.bubble = SKShapeNode(rectOf: CGSize(width: self.bubbleText.frame.width + 30, height: self.bubbleText.frame.height + 30), cornerRadius: 10.0)
+                self.bubble.position = CGPoint(x: 250, y: 500 - (self.bubbleText.frame.height/2.0) - 25 )
+                self.bubble.fillColor = .white
+                self.bubble.strokeColor = .clear
+    
+                self.bubble.addChild(self.bubbleText)
+                self.content.addChild(self.bubble)
+           }
+           self.content.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), action, SKAction.fadeIn(withDuration: 0.5)]))
+        }
+        
     }
     func createScene(_ scene: Int){
-        createChatWindow()
         for message in messages[scene]{
             let bubble = createChatBubble(message)
             self.msgs.append(bubble)
@@ -107,23 +155,16 @@ public class UI {
         }
         
     }
-    func showIndicator(_ classification: Classification) -> SKLabelNode{
-        switch classification {
-        case .harmSelf:
-            return createIndicatorNode(text: "User is likely to harm themselves.")
-        case .harmUser:
-            return createIndicatorNode(text: "Someone might be harming the user.")
-        default:
-            return createIndicatorNode(text: "Moneo has identified no indicators.")
-        }
-    }
-    func createIndicatorNode(text: String) -> SKLabelNode{
-        let label = SKLabelNode(text: text)
-        label.fontSize = 14.0
-        label.fontColor = .white
-        label.alpha = 0.4
-        return label
-    }
+//    func showIndicator(_ classification: Classification) -> SKLabelNode{
+//        switch classification {
+//        case .harmSelf:
+//            return createIndicatorNode(text: "User is likely to harm themselves.")
+//        case .harmUser:
+//            return createIndicatorNode(text: "Someone might be harming the user.")
+//        default:
+//            return createIndicatorNode(text: "Moneo has identified no indicators.")
+//        }
+//    }
     func createChatWindow(){
         DispatchQueue.main.async {
             self.border = SKShapeNode(rect: CGRect(x: 100, y: 15, width: 300, height: 470) , cornerRadius: 20)
@@ -158,7 +199,7 @@ public class UI {
         bubble.position = CGPoint(x: 0, y: 0)
         bubble.addChild(textLb)
         
-        var senderLb = SKLabelNode(fontNamed: UIFont.systemFont(ofSize: 10.0, weight: .regular).fontName)
+        let senderLb = SKLabelNode(fontNamed: UIFont.systemFont(ofSize: 10.0, weight: .regular).fontName)
         senderLb.position = CGPoint(x: 15, y: bubble.frame.maxY + 5)
         senderLb.text = "User"
         if msg.sender == .moneo {
@@ -199,9 +240,19 @@ public class UI {
             self.content.run(SKAction.sequence([SKAction.wait(forDuration: 0.5), action]))
         case 1:
             self.createPictureScene(2)
-            self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5),
-                                                   SKAction.fadeIn(withDuration: 0.5)]))
         case 2:
+            self.createPictureScene(3)
+        case 3:
+            self.createPictureScene(4)
+        case 4:
+            self.createPictureScene(5)
+        case 5:
+            self.createPictureScene(6)
+        case 7:
+            self.createPictureScene(7)
+        case 8:
+            self.bubble.run(SKAction.fadeOut(withDuration: 0.5))
+            self.mainPic.run(SKAction.fadeOut(withDuration: 0.5))
             for msg in self.msgs {
                 msg.run(SKAction.fadeOut(withDuration: 0.5))
             }
@@ -209,12 +260,12 @@ public class UI {
                                                    SKAction.fadeIn(withDuration: 0.5)]))
             let action = SKAction.run {
                 self.time = 0.0
-                self.createPictureScene(1)
+                self.createChatWindow()
+                self.createScene(0)
             }
             self.content.run(SKAction.sequence([SKAction.wait(forDuration: 0.5), action]))
             msgs = []
-            
-        case 3:
+        case 9:
             for msg in self.msgs {
                 msg.run(SKAction.fadeOut(withDuration: 0.5))
             }
@@ -226,7 +277,7 @@ public class UI {
             }
             self.content.run(SKAction.sequence([SKAction.wait(forDuration: 0.5), action]))
             msgs = []
-        case 4:
+        case 10:
             for msg in self.msgs {
                 msg.run(SKAction.fadeOut(withDuration: 0.5))
             }
@@ -238,18 +289,33 @@ public class UI {
             }
             self.content.run(SKAction.sequence([SKAction.wait(forDuration: 0.5), action]))
             msgs = []
+        case 11:
+            for msg in self.msgs {
+                msg.run(SKAction.fadeOut(withDuration: 0.5))
+            }
+            self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.wait(forDuration: 0.5),
+                                                   SKAction.fadeIn(withDuration: 0.5)]))
+            
+            self.border.run(SKAction.fadeOut(withDuration: 0.5))
+            let action = SKAction.run {
+                self.createPictureScene(8)
+            }
+            self.content.run(SKAction.sequence([SKAction.wait(forDuration: 0.5), action]))
+        case 12:
+            self.createPictureScene(9)
+            self.buttonNode.run(SKAction.fadeOut(withDuration: 0.5))
         default:
             break
         }
         scene += 1
     }
-    private func centerAlign(_ string: String, _ size: CGFloat) -> NSAttributedString{
+    private func centerAlign(_ string: String, _ size: CGFloat, _ color: UIColor) -> NSAttributedString{
         let attrString = NSMutableAttributedString(string: string)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
         let range = NSRange(location: 0, length: string.count)
         attrString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: range)
-        attrString.addAttributes([NSAttributedString.Key.foregroundColor : UIColor.white, NSAttributedString.Key.font : UIFont.systemFont(ofSize: size, weight: .regular)], range: range)
+        attrString.addAttributes([NSAttributedString.Key.foregroundColor : color, NSAttributedString.Key.font : UIFont.systemFont(ofSize: size, weight: .regular)], range: range)
         return attrString
     }
 }

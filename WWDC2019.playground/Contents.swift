@@ -51,7 +51,7 @@ let primarySuicideResource = Resource(name: "National Suicide Prevention Lifelin
 let suicideResource = Resource(name: "National Suicide Prevention Lifeline", contactInfo: "Call 800-273-8255 to speak with a trained counselor.")
 let mentalHealthResource = Resource(name: "Mental Health Hotline", contactInfo:  "Call (888) 993-3112 to speak with a trained counselor.")
 
-let domesticViolenceResource = Resource(name: "National Domestic Violence Lifeline", contactInfo: "Call 800-799-7233 to speak with trained experts who provide confidential support to anyone experiencing domestic violence.")
+let domesticViolenceResource = Resource(name: "National Domestic Violence Lifeline", contactInfo: "Call 800-799-7233 to speak with trained experts who provide confidential support.")
 let sexualAssaultResource = Resource(name: "National Suicide Prevention Lifeline", contactInfo: "Call 800-273-8255 to speak with a trained counselor.")
 let primaryCrisisResource = Resource(name: "Teen Line", contactInfo: "Call 310-855-4673 to connect with at trained teen counselor.")
 let secondaryCrisisResource = Resource(name: "Crisis Textline", contactInfo: "Text NAMI to 741-741 to connect with a trained crisis counselor.")
@@ -79,6 +79,7 @@ moneo.primarySuicideResource = primarySuicideResource
 moneo.suicideResource = suicideResource
 moneo.mentalHealthResource = mentalHealthResource
 moneo.domesticViolenceResource = domesticViolenceResource
+moneo.sexualAssaultResource = sexualAssaultResource
 moneo.primaryCrisisResource =  primaryCrisisResource
 moneo.secondaryCrisisResource = secondaryCrisisResource
 /*:
