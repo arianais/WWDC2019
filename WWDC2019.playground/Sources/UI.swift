@@ -303,6 +303,8 @@ public class UI {
             self.content.run(SKAction.sequence([SKAction.wait(forDuration: 0.5), action]))
         case 12:
             self.createPictureScene(9)
+        case 13:
+            self.createPictureScene(10)
             self.buttonNode.run(SKAction.fadeOut(withDuration: 0.5))
         default:
             break
