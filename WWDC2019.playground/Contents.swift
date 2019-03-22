@@ -50,11 +50,11 @@ let suicideResource = Resource(name: "National Suicide Prevention Lifeline", con
  */
 let suicideResource = Resource(name: "National Suicide Prevention Lifeline", contactInfo: "Call 800-273-8255 to speak with a trained counselor.")
 let mentalHealthResource = Resource(name: "Mental Health Hotline", contactInfo:  "Call (888) 993-3112 to speak with a trained counselor.")
-
 let domesticViolenceResource = Resource(name: "National Domestic Violence Lifeline", contactInfo: "Call 800-799-7233 to speak with trained experts who provide confidential support.")
-let sexualAssaultResource = Resource(name: "National Suicide Prevention Lifeline", contactInfo: "Call 800-273-8255 to speak with a trained counselor.")
-let primaryCrisisResource = Resource(name: "Teen Line", contactInfo: "Call 310-855-4673 to connect with at trained teen counselor.")
-let secondaryCrisisResource = Resource(name: "Crisis Textline", contactInfo: "Text NAMI to 741-741 to connect with a trained crisis counselor.")
+let sexualAssaultResource = Resource(name: "National Sexual Assault Hotline", contactInfo: "Call 800-656-4673 to be connected with a trained staff member in your area.")
+let primaryCrisisResource = Resource(name: "Crisis Textline", contactInfo: "Text NAMI to 741-741 to connect with a trained crisis counselor.")
+let secondaryCrisisResource = Resource(name: "Teen Line", contactInfo: "Call 310-855-4673 to connect with at trained teen counselor.")
+
 
 /*:
  ## Stage 2: Ideate & Select

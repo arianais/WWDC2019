@@ -13,6 +13,7 @@ public class UI {
     var time = 0.0
     public var superhero = ""
     public var agent = ""
+    var images = [UIImage]()
     //MARK: View Initalization
     let darkBlue = UIColor(red: (34.0/255.0), green: (33.0/255.0), blue: (58.0/255.0), alpha: 1.0)
     var buttonNode = SKNode()
@@ -44,6 +45,12 @@ public class UI {
         view.presentScene(scene)
         content.position = CGPoint(x: 0, y: 0)
         scene.addChild(content)
+        DispatchQueue.main.async {
+            let cam = Camera()
+            cam.retrieveImages({ (images) in
+                self.images = images
+            })
+        }
     }
     public func setTitlePage(){
         if(self.superhero != ""){
@@ -122,11 +129,15 @@ public class UI {
             }
         }
         DispatchQueue.main.async {
-            self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5),
-                                                   SKAction.fadeIn(withDuration: 0.5)]))
+            var sequence = [SKAction.fadeOut(withDuration: 0.5),
+                            SKAction.fadeIn(withDuration: 0.5)]
+            if(scene == 10) {
+                sequence.remove(at: 1)
+            }
+            self.buttonNode.run(SKAction.sequence(sequence))
         }
         DispatchQueue.main.async {
-        let action = SKAction.run {
+            let action = SKAction.run {
                 self.bubbleText.removeFromParent()
                 self.bubble.removeFromParent()
                 self.bubbleText.text = self.narrative[scene - 1]
@@ -140,10 +151,13 @@ public class UI {
     
                 self.bubble.addChild(self.bubbleText)
                 self.content.addChild(self.bubble)
-           }
-           self.content.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), action, SKAction.fadeIn(withDuration: 0.5)]))
+            }
+            var sequence = [SKAction.fadeOut(withDuration: 0.5), action, SKAction.fadeIn(withDuration: 0.5)]
+            if(scene == 10) {
+                sequence.remove(at: 1)
+            }
+            self.content.run(SKAction.sequence(sequence))
         }
-        
     }
     func createScene(_ scene: Int){
         for message in messages[scene]{
@@ -167,7 +181,7 @@ public class UI {
 //    }
     func createChatWindow(){
         DispatchQueue.main.async {
-            self.border = SKShapeNode(rect: CGRect(x: 100, y: 15, width: 300, height: 470) , cornerRadius: 20)
+            self.border = SKShapeNode(rect: CGRect(x: 100, y: 15, width: 300, height: 470) , cornerRadius: 15)
             self.border.strokeColor = .white
             self.border.fillColor = .clear
             self.content.addChild(self.border)
@@ -305,7 +319,6 @@ public class UI {
             self.createPictureScene(9)
         case 13:
             self.createPictureScene(10)
-            self.buttonNode.run(SKAction.fadeOut(withDuration: 0.5))
         default:
             break
         }
@@ -329,11 +342,9 @@ extension NSMutableAttributedString {
         
         return self
     }
-    
     @discardableResult func normal(_ text: String) -> NSMutableAttributedString {
         let normal = NSAttributedString(string: text)
         append(normal)
-        
         return self
     }
 }
