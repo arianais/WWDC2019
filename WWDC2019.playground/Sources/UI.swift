@@ -44,7 +44,7 @@ public class UI {
         PlaygroundPage.current.liveView = view
         let scene = SKScene(size: CGSize(width: 500, height: 500))
         scene.scaleMode = .aspectFit
-        scene.backgroundColor = darkBlue
+        scene.backgroundColor = .black
         view.presentScene(scene)
         content.position = CGPoint(x: 0, y: 0)
         scene.addChild(content)
@@ -62,8 +62,8 @@ public class UI {
                     
                     self.imageNode = SKSpriteNode(texture: SKTexture(image: self.images[0]))
                     self.imageNode.alpha = 0.0
-                    self.imageNode.setScale(1/14)
-                    self.imageNode.position = CGPoint(x: 250, y:  250)
+                    self.imageNode.setScale(1/15)
+                    self.imageNode.position = CGPoint(x: 254, y:  254)
                     
                     self.content.addChild(self.imageNode)
                     self.content.addChild(self.mainPic)
@@ -127,17 +127,24 @@ public class UI {
         }
     }
     func createPictureScene(_ scene: Int){
-        //        print("SCENE", scene)
         DispatchQueue.main.async {
-            if(self.scene == 1){
+            if(scene == 1){
                 self.imageNode.run(SKAction.fadeIn(withDuration: 0.5))
                 self.mainPic.run(SKAction.fadeIn(withDuration: 0.5))
             } else {
-                if(self.scene == 2 || self.scene == 4){
+                if(scene == 2 || scene == 4 || scene == 7){
                     self.imageNode.run( SKAction.fadeOut(withDuration: 0.5))
                 } else if self.scene == 3 {
-                    self.imageNode.position = CGPoint(x: 220, y: 348)
-                    self.imageNode.setScale((1.0/28.0))
+                    self.imageNode.position = CGPoint(x: 230, y: 335)
+                    self.imageNode.setScale((1.0/43))
+                    self.imageNode.run(SKAction.fadeIn(withDuration: 0.5))
+                } else if self.scene == 6 {
+                    self.imageNode.setScale(1/15)
+                    self.imageNode.position = CGPoint(x: 252.5, y:  255)
+                    self.imageNode.run(SKAction.fadeIn(withDuration: 0.5))
+                } else if scene == 10 {
+                    self.imageNode.position = CGPoint(x: 243, y: 280)
+                    self.imageNode.setScale((1.0/54))
                     self.imageNode.run(SKAction.fadeIn(withDuration: 0.5))
                 }
             
@@ -166,7 +173,7 @@ public class UI {
           
             if(scene == 1){
                 self.content.run(action)
-                self.buttonNode.run(SKAction.sequence([SKAction.wait(forDuration: self.songTime - 0.5), SKAction.fadeIn(withDuration: 0.5)]))
+               // self.buttonNode.run(SKAction.sequence([SKAction.wait(forDuration: 5.0), SKAction.fadeIn(withDuration: 0.5)]))
             }
             else if(scene != 10) {
                 self.content.run(action)
@@ -256,11 +263,11 @@ public class UI {
             self.titlePic.run(SKAction.fadeOut(withDuration: 0.5))
             
             let action = SKAction.run {
-                self.songTime = 5.0
+                self.songTime = 6.0
                 self.createPictureScene(1)
                 self.content.run(SKAction.playSoundFileNamed("Themes/ironman.mp3", waitForCompletion: false))
             }
-            self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.fadeIn(withDuration: 0.5)]))
+            self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.wait(forDuration: 4.0), SKAction.fadeIn(withDuration: 0.5)]))
             self.content.run(SKAction.sequence([SKAction.wait(forDuration: 0.5), action]))
         case 1:
             self.songTime = 4.0
@@ -273,11 +280,11 @@ public class UI {
         case 3:
             self.songTime = 3.0
             self.createPictureScene(4)
-            self.content.run(SKAction.playSoundFileNamed("Themes/mulan.mp3", waitForCompletion: false))
+            self.content.run(SKAction.playSoundFileNamed("Sounds/talking.mp3", waitForCompletion: false))
         case 4:
             self.songTime = 3.0
             self.createPictureScene(5)
-            self.content.run(SKAction.playSoundFileNamed("Themess/spiderman.mp3", waitForCompletion: false))
+            self.content.run(SKAction.playSoundFileNamed("Themes/spiderman.mp3", waitForCompletion: false))
         case 5:
             self.songTime = 3.0
             self.createPictureScene(6)

@@ -33,14 +33,6 @@ public class Camera{
             }
             completion([pic])
         })
-        //        for image in path {
-        //            self.detectFace(image: UIImage(named: name)!, { (pic) in
-        //                images.append(pic)
-        //                if(image == path.last){
-        //                    completion(images)
-        //                }
-        //            })
-        //        }
     }
     //detect faces: detects the faces in an image using Vision
     private func detectFace(image: UIImage,_ completion: @escaping (UIImage) -> Void){
@@ -56,7 +48,7 @@ public class Camera{
                     else{
                         length1 *= image.size.height
                     }
-                    let rect =  CGRect(x: (observation.midX * image.size.width) - (length1), y:  (observation.minY * image.size.height) - (length1 ), width: length1 * 1.5, height: length1 * 1.5)
+                    let rect =  CGRect(x: (observation.midX * image.size.width) - (length1), y:  (observation.minY * image.size.height) - (length1 * 1.1), width: length1 * 1.5, height: length1 * 1.5)
                     completion(self.crop(image: image, rect: rect))
                 }
             }
