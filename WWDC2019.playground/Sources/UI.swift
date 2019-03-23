@@ -44,7 +44,7 @@ public class UI {
         PlaygroundPage.current.liveView = view
         let scene = SKScene(size: CGSize(width: 500, height: 500))
         scene.scaleMode = .aspectFit
-        scene.backgroundColor = .black
+        scene.backgroundColor = self.darkBlue
         view.presentScene(scene)
         content.position = CGPoint(x: 0, y: 0)
         scene.addChild(content)
@@ -129,20 +129,24 @@ public class UI {
     func createPictureScene(_ scene: Int){
         DispatchQueue.main.async {
             if(scene == 1){
+                self.imageNode.alpha = 0.0
                 self.imageNode.run(SKAction.fadeIn(withDuration: 0.5))
                 self.mainPic.run(SKAction.fadeIn(withDuration: 0.5))
             } else {
                 if(scene == 2 || scene == 4 || scene == 7){
                     self.imageNode.run( SKAction.fadeOut(withDuration: 0.5))
                 } else if self.scene == 3 {
+                    self.imageNode.alpha = 0.0
                     self.imageNode.position = CGPoint(x: 230, y: 335)
                     self.imageNode.setScale((1.0/43))
                     self.imageNode.run(SKAction.fadeIn(withDuration: 0.5))
                 } else if self.scene == 6 {
+                    self.imageNode.alpha = 0.0
                     self.imageNode.setScale(1/15)
                     self.imageNode.position = CGPoint(x: 252.5, y:  255)
                     self.imageNode.run(SKAction.fadeIn(withDuration: 0.5))
                 } else if scene == 10 {
+                    self.imageNode.alpha = 0.0
                     self.imageNode.position = CGPoint(x: 243, y: 280)
                     self.imageNode.setScale((1.0/54))
                     self.imageNode.run(SKAction.fadeIn(withDuration: 0.5))
@@ -280,7 +284,7 @@ public class UI {
         case 3:
             self.songTime = 3.0
             self.createPictureScene(4)
-            self.content.run(SKAction.playSoundFileNamed("Sounds/talking.mp3", waitForCompletion: false))
+            self.content.run(SKAction.playSoundFileNamed("Themes/mulan.mp3", waitForCompletion: false))
         case 4:
             self.songTime = 3.0
             self.createPictureScene(5)
@@ -337,7 +341,7 @@ public class UI {
             
             self.border.run(SKAction.fadeOut(withDuration: 0.5))
             let action = SKAction.run {
-                self.songTime = 7.0
+                self.songTime = 8.0
                 self.createPictureScene(8)
                 self.content.run(SKAction.playSoundFileNamed("Themes/incredibles.mp3", waitForCompletion: false))
             }
