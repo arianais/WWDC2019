@@ -11,6 +11,7 @@ public class UI {
     //MARK: Basic Variables
     var scene = 0
     var time = 0.0
+    var songTime = 0.0
     public var superhero = ""
     public var agent = ""
     var images = [UIImage]()
@@ -47,27 +48,9 @@ public class UI {
         view.presentScene(scene)
         content.position = CGPoint(x: 0, y: 0)
         scene.addChild(content)
-        //        let cam = Camera()
-        //        cam.retrieveImages({ (images) in
-        //self.imageNode.texture =  SKTexture(image: self.images[0])
-        //self.imageNode = SKSpriteNode(texture: SKTexture(image: self.images[0]))
-        
-        //        })
     }
     public func setTitlePage(){
         if(self.superhero != ""){
-            //            DispatchQueue.main.async {
-            //                self.content.addChild(self.imageNode)
-            //                let cam = Camera()
-            //                cam.retrieveImages({ (images) in
-            //                    self.images = images
-            //                    self.imageNode = SKSpriteNode(texture: SKTexture(image: self.images[0]))
-            //                   // self.imageNode.setScale(1/3)
-            //                    self.imageNode.position = CGPoint(x: 250, y: 250)
-            //
-            //                })
-            //            }
-            
             DispatchQueue.main.async {
                 let cam = Camera()
                 cam.retrieveImages({ (images) in
@@ -79,7 +62,7 @@ public class UI {
                     
                     self.imageNode = SKSpriteNode(texture: SKTexture(image: self.images[0]))
                     self.imageNode.alpha = 0.0
-                    self.imageNode.setScale(1/12)
+                    self.imageNode.setScale(1/14)
                     self.imageNode.position = CGPoint(x: 250, y:  250)
                     
                     self.content.addChild(self.imageNode)
@@ -141,9 +124,7 @@ public class UI {
                 self.bubbleText.preferredMaxLayoutWidth = 430
                 self.bubbleText.numberOfLines = 0
             }
-            
         }
-        
     }
     func createPictureScene(_ scene: Int){
         //        print("SCENE", scene)
@@ -161,7 +142,6 @@ public class UI {
                 }
             
                     self.mainPic.run(SKAction.sequence([ SKAction.fadeOut(withDuration: 0.5), SKAction.animate(with: [SKTexture(imageNamed: "Images/pg\(scene)")], timePerFrame: 0.0), SKAction.fadeIn(withDuration: 0.5)]))
-            
                 
             }
         }
@@ -183,12 +163,14 @@ public class UI {
                 self.bubble.run(SKAction.fadeIn(withDuration: 0.5))
                 self.content.addChild(self.bubble)
             }
-            var sequence = [SKAction.fadeOut(withDuration: 0.5), action, SKAction.fadeIn(withDuration: 0.5)]
+          
             if(scene == 1){
-                sequence = [action, SKAction.fadeIn(withDuration: 0.5)]
+                self.content.run(action)
+                self.buttonNode.run(SKAction.sequence([SKAction.wait(forDuration: self.songTime - 0.5), SKAction.fadeIn(withDuration: 0.5)]))
             }
-            if(scene != 10) {
-                self.content.run(SKAction.sequence(sequence))
+            else if(scene != 10) {
+                self.content.run(action)
+                self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.wait(forDuration: self.songTime - 1.0), SKAction.fadeIn(withDuration: 0.5)]))
             } else {
                 self.bubble.run(SKAction.fadeOut(withDuration: 0.5))
                 self.buttonNode.run(SKAction.fadeOut(withDuration: 0.5))
@@ -206,16 +188,6 @@ public class UI {
         }
         
     }
-    //    func showIndicator(_ classification: Classification) -> SKLabelNode{
-    //        switch classification {
-    //        case .harmSelf:
-    //            return createIndicatorNode(text: "User is likely to harm themselves.")
-    //        case .harmUser:
-    //            return createIndicatorNode(text: "Someone might be harming the user.")
-    //        default:
-    //            return createIndicatorNode(text: "Moneo has identified no indicators.")
-    //        }
-    //    }
     func createChatWindow(){
         DispatchQueue.main.async {
             self.border = SKShapeNode(rect: CGRect(x: 100, y: 15, width: 300, height: 470) , cornerRadius: 15)
@@ -284,22 +256,36 @@ public class UI {
             self.titlePic.run(SKAction.fadeOut(withDuration: 0.5))
             
             let action = SKAction.run {
+                self.songTime = 5.0
                 self.createPictureScene(1)
+                self.content.run(SKAction.playSoundFileNamed("Themes/ironman.mp3", waitForCompletion: false))
             }
             self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.fadeIn(withDuration: 0.5)]))
             self.content.run(SKAction.sequence([SKAction.wait(forDuration: 0.5), action]))
         case 1:
+            self.songTime = 4.0
             self.createPictureScene(2)
+            self.content.run(SKAction.playSoundFileNamed("Themes/avengers.mp3", waitForCompletion: false))
         case 2:
+            self.songTime = 3.0
             self.createPictureScene(3)
+            self.content.run(SKAction.playSoundFileNamed("Themes/superman.mp3", waitForCompletion: false))
         case 3:
+            self.songTime = 3.0
             self.createPictureScene(4)
+            self.content.run(SKAction.playSoundFileNamed("Themes/mulan.mp3", waitForCompletion: false))
         case 4:
+            self.songTime = 3.0
             self.createPictureScene(5)
+            self.content.run(SKAction.playSoundFileNamed("Themess/spiderman.mp3", waitForCompletion: false))
         case 5:
+            self.songTime = 3.0
             self.createPictureScene(6)
+            self.content.run(SKAction.playSoundFileNamed("Themes/batman.mp3", waitForCompletion: false))
         case 7:
+            self.songTime = 3.0
             self.createPictureScene(7)
+            self.content.run(SKAction.playSoundFileNamed("Sounds/sparkle.mp3", waitForCompletion: false))
         case 8:
             self.bubble.run(SKAction.fadeOut(withDuration: 0.5))
             self.mainPic.run(SKAction.fadeOut(withDuration: 0.5))
@@ -344,11 +330,15 @@ public class UI {
             
             self.border.run(SKAction.fadeOut(withDuration: 0.5))
             let action = SKAction.run {
+                self.songTime = 7.0
                 self.createPictureScene(8)
+                self.content.run(SKAction.playSoundFileNamed("Themes/incredibles.mp3", waitForCompletion: false))
             }
             self.content.run(SKAction.sequence([SKAction.wait(forDuration: 0.5), action]))
         case 12:
+            self.songTime = 8.0
             self.createPictureScene(9)
+            self.content.run(SKAction.playSoundFileNamed("Themes/captianamerica.mp3", waitForCompletion: false))
         case 13:
             self.createPictureScene(10)
         default:
