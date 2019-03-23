@@ -22,6 +22,8 @@ public class UI {
     let content = SKNode()
     //MARK: Narrative Nodes Initalization
     var mainPic = SKSpriteNode(texture: SKTexture(imageNamed: "Images/pg1"))
+    var scenePic = SKSpriteNode()
+    var imageNode = SKSpriteNode()
     var bubble = SKShapeNode()
     var bubbleText = SKLabelNode()
     var narrative = ["Once upon a time, there was a creator who had a knack for tinkering and innovating behind a pixelated screen.", "One day this creator got a text asking if they would like to join the Appvengers — a secret team of elite technical superheroes determined to use their powers to improve the world with technology.", "The creator happily accepted and became a superhero.", "This hero's first training mission was the Moneo Mission. The required the superhero to create a piece of technology to help those experiencing a mental health crisis, or those needing immediate mental health care. The superhero decided to start this mission by interviewing those who had experienced this issue in her community.", "After conducting many interviews, the superhero used the information gathered to generate a flurry of possible solutions. Looking at the wall covered in sticky notes, the superhero began to see one idea glistening through the clutter.", "After seeing that this idea was the one, the superhero got to work and began to use their superpowers to create the chatbot.", "Some time later, the superhero finished a prototype of Moneo — a chatbot that refered individuals in a mental health crisis to needed helplines and resources.", "Then the superhero shared Moneo with their community and was amazed to see how appreaciative others were of the technology that they had created.", "The superhero flew back that day to their laptop eager to use their superpowers to create more good in their community.", "The End :)"]
@@ -34,7 +36,7 @@ public class UI {
     var border = SKShapeNode()
     var msgs = [SKNode]()
     public var messages = [[Message]]()
- 
+    
     
     //MARK: Init
     public init(){
@@ -45,20 +47,51 @@ public class UI {
         view.presentScene(scene)
         content.position = CGPoint(x: 0, y: 0)
         scene.addChild(content)
-        DispatchQueue.main.async {
-            let cam = Camera()
-            cam.retrieveImages({ (images) in
-                self.images = images
-            })
-        }
+        //        let cam = Camera()
+        //        cam.retrieveImages({ (images) in
+        //self.imageNode.texture =  SKTexture(image: self.images[0])
+        //self.imageNode = SKSpriteNode(texture: SKTexture(image: self.images[0]))
+        
+        //        })
     }
     public func setTitlePage(){
         if(self.superhero != ""){
+            //            DispatchQueue.main.async {
+            //                self.content.addChild(self.imageNode)
+            //                let cam = Camera()
+            //                cam.retrieveImages({ (images) in
+            //                    self.images = images
+            //                    self.imageNode = SKSpriteNode(texture: SKTexture(image: self.images[0]))
+            //                   // self.imageNode.setScale(1/3)
+            //                    self.imageNode.position = CGPoint(x: 250, y: 250)
+            //
+            //                })
+            //            }
+            
             DispatchQueue.main.async {
-                self.mainPic.setScale(1/3)
-                self.mainPic.position = CGPoint(x:250, y: 250)
-                self.mainPic.alpha = 0.0
-                self.content.addChild(self.mainPic)
+                let cam = Camera()
+                cam.retrieveImages({ (images) in
+                    self.images = images
+                    self.mainPic = SKSpriteNode(texture: SKTexture(imageNamed: "Images/pg1"))
+                    self.mainPic.setScale(1/3)
+                    self.mainPic.alpha = 0.0
+                    self.mainPic.position = CGPoint(x: 250, y: 250)
+                    
+                    self.imageNode = SKSpriteNode(texture: SKTexture(image: self.images[0]))
+                    self.imageNode.alpha = 0.0
+                    self.imageNode.setScale(1/12)
+                    self.imageNode.position = CGPoint(x: 250, y:  250)
+                    
+                    self.content.addChild(self.imageNode)
+                    self.content.addChild(self.mainPic)
+                    
+                    self.buttonNode = SKButtonNode(texture: SKTexture(imageNamed: "Images/button")) {
+                        self.next()
+                    }
+                    self.buttonNode.setScale(1/3)
+                    self.buttonNode.position = CGPoint(x: 450, y: 250)
+                    self.content.addChild(self.buttonNode)
+                })
             }
             DispatchQueue.main.async {
                 self.titlePic.setScale(1/4)
@@ -87,14 +120,7 @@ public class UI {
                 self.warning.position = CGPoint(x: 250, y: 10)
                 self.content.addChild(self.warning)
             }
-            DispatchQueue.main.async {
-                self.buttonNode = SKButtonNode(texture: SKTexture(imageNamed: "Images/button")) {
-                    self.next()
-                }
-                self.buttonNode.setScale(1/3)
-                self.buttonNode.position = CGPoint(x: 450, y: 250)
-                self.content.addChild(self.buttonNode)
-            }
+            
             DispatchQueue.main.async {
                 if(self.agent != "" && self.self.superhero != ""){
                     self.narrative[0] = "Once upon a time, there was a creator named \(self.agent) who had a knack for tinkering and innovating behind a pixelated screen."
@@ -120,43 +146,54 @@ public class UI {
         
     }
     func createPictureScene(_ scene: Int){
-        print("SCENE", scene)
+        //        print("SCENE", scene)
         DispatchQueue.main.async {
             if(self.scene == 1){
-                self.mainPic.run(SKAction.sequence([SKAction.animate(withNormalTextures: [SKTexture(imageNamed: "Images/pg\(scene)")], timePerFrame: 0.5), SKAction.fadeIn(withDuration: 0.5)]))
+                self.imageNode.run(SKAction.fadeIn(withDuration: 0.5))
+                self.mainPic.run(SKAction.fadeIn(withDuration: 0.5))
             } else {
-                self.mainPic.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.animate(with: [SKTexture(imageNamed: "Images/pg\(scene)")], timePerFrame: 0.1), SKAction.fadeIn(withDuration: 0.5)]))
+                if(self.scene == 2 || self.scene == 4){
+                    self.imageNode.run( SKAction.fadeOut(withDuration: 0.5))
+                } else if self.scene == 3 {
+                    self.imageNode.position = CGPoint(x: 220, y: 348)
+                    self.imageNode.setScale((1.0/28.0))
+                    self.imageNode.run(SKAction.fadeIn(withDuration: 0.5))
+                }
+            
+                    self.mainPic.run(SKAction.sequence([ SKAction.fadeOut(withDuration: 0.5), SKAction.animate(with: [SKTexture(imageNamed: "Images/pg\(scene)")], timePerFrame: 0.0), SKAction.fadeIn(withDuration: 0.5)]))
+            
+                
             }
-        }
-        DispatchQueue.main.async {
-            var sequence = [SKAction.fadeOut(withDuration: 0.5),
-                            SKAction.fadeIn(withDuration: 0.5)]
-            if(scene == 10) {
-                sequence.remove(at: 1)
-            }
-            self.buttonNode.run(SKAction.sequence(sequence))
         }
         DispatchQueue.main.async {
             let action = SKAction.run {
                 self.bubbleText.removeFromParent()
                 self.bubble.removeFromParent()
                 self.bubbleText.text = self.narrative[scene - 1]
-        
+            
                 self.bubbleText.position = CGPoint(x: 0 , y: -(self.bubbleText.frame.height/2.0))
-                
+            
                 self.bubble = SKShapeNode(rectOf: CGSize(width: self.bubbleText.frame.width + 30, height: self.bubbleText.frame.height + 30), cornerRadius: 10.0)
                 self.bubble.position = CGPoint(x: 250, y: 500 - (self.bubbleText.frame.height/2.0) - 25 )
                 self.bubble.fillColor = .white
                 self.bubble.strokeColor = .clear
-    
+            
                 self.bubble.addChild(self.bubbleText)
+                self.bubble.alpha = 0.0
+                self.bubble.run(SKAction.fadeIn(withDuration: 0.5))
                 self.content.addChild(self.bubble)
             }
             var sequence = [SKAction.fadeOut(withDuration: 0.5), action, SKAction.fadeIn(withDuration: 0.5)]
-            if(scene == 10) {
-                sequence.remove(at: 1)
+            if(scene == 1){
+                sequence = [action, SKAction.fadeIn(withDuration: 0.5)]
             }
-            self.content.run(SKAction.sequence(sequence))
+            if(scene != 10) {
+                self.content.run(SKAction.sequence(sequence))
+            } else {
+                self.bubble.run(SKAction.fadeOut(withDuration: 0.5))
+                self.buttonNode.run(SKAction.fadeOut(withDuration: 0.5))
+            }
+
         }
     }
     func createScene(_ scene: Int){
@@ -169,16 +206,16 @@ public class UI {
         }
         
     }
-//    func showIndicator(_ classification: Classification) -> SKLabelNode{
-//        switch classification {
-//        case .harmSelf:
-//            return createIndicatorNode(text: "User is likely to harm themselves.")
-//        case .harmUser:
-//            return createIndicatorNode(text: "Someone might be harming the user.")
-//        default:
-//            return createIndicatorNode(text: "Moneo has identified no indicators.")
-//        }
-//    }
+    //    func showIndicator(_ classification: Classification) -> SKLabelNode{
+    //        switch classification {
+    //        case .harmSelf:
+    //            return createIndicatorNode(text: "User is likely to harm themselves.")
+    //        case .harmUser:
+    //            return createIndicatorNode(text: "Someone might be harming the user.")
+    //        default:
+    //            return createIndicatorNode(text: "Moneo has identified no indicators.")
+    //        }
+    //    }
     func createChatWindow(){
         DispatchQueue.main.async {
             self.border = SKShapeNode(rect: CGRect(x: 100, y: 15, width: 300, height: 470) , cornerRadius: 15)
@@ -193,7 +230,7 @@ public class UI {
         if(msg.title != nil && msg.title != ""){
             textLb.attributedText = NSMutableAttributedString().bold("\(msg.title!)\n").normal(msg.text)
         } else {
-             textLb.text = msg.text
+            textLb.text = msg.text
         }
         textLb.fontColor = .white
         textLb.preferredMaxLayoutWidth = 225
@@ -232,7 +269,7 @@ public class UI {
         if msg.sender == .moneo {
             chatBubble.position = CGPoint(x: (195 - (bubble.frame.width)) + 195, y: y)
         }
-  
+        
         chatBubble.addChild(senderLb)
         chatBubble.addChild(bubble)
         self.content.addChild(chatBubble)
@@ -245,12 +282,11 @@ public class UI {
             self.subtitle.run(SKAction.fadeOut(withDuration: 0.5))
             self.warning.run(SKAction.fadeOut(withDuration: 0.5))
             self.titlePic.run(SKAction.fadeOut(withDuration: 0.5))
-          
+            
             let action = SKAction.run {
                 self.createPictureScene(1)
             }
-            self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5),
-                                                   SKAction.fadeIn(withDuration: 0.5)]))
+            self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.fadeIn(withDuration: 0.5)]))
             self.content.run(SKAction.sequence([SKAction.wait(forDuration: 0.5), action]))
         case 1:
             self.createPictureScene(2)
@@ -270,8 +306,7 @@ public class UI {
             for msg in self.msgs {
                 msg.run(SKAction.fadeOut(withDuration: 0.5))
             }
-            self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.wait(forDuration: 12.0),
-                                                   SKAction.fadeIn(withDuration: 0.5)]))
+            self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.wait(forDuration: 12.0), SKAction.fadeIn(withDuration: 0.5)]))
             let action = SKAction.run {
                 self.time = 0.0
                 self.createChatWindow()
@@ -283,8 +318,7 @@ public class UI {
             for msg in self.msgs {
                 msg.run(SKAction.fadeOut(withDuration: 0.5))
             }
-            self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.wait(forDuration: 12.0),
-                                                   SKAction.fadeIn(withDuration: 0.5)]))
+            self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.wait(forDuration: 12.0), SKAction.fadeIn(withDuration: 0.5)]))
             let action = SKAction.run {
                 self.time = 0.0
                 self.createScene(1)
@@ -295,8 +329,7 @@ public class UI {
             for msg in self.msgs {
                 msg.run(SKAction.fadeOut(withDuration: 0.5))
             }
-            self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.wait(forDuration: 12.0),
-                                                   SKAction.fadeIn(withDuration: 0.5)]))
+            self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.wait(forDuration: 12.0), SKAction.fadeIn(withDuration: 0.5)]))
             let action = SKAction.run {
                 self.time = 0.0
                 self.createScene(2)
@@ -307,8 +340,7 @@ public class UI {
             for msg in self.msgs {
                 msg.run(SKAction.fadeOut(withDuration: 0.5))
             }
-            self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.wait(forDuration: 0.5),
-                                                   SKAction.fadeIn(withDuration: 0.5)]))
+            self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.wait(forDuration: 0.5), SKAction.fadeIn(withDuration: 0.5)]))
             
             self.border.run(SKAction.fadeOut(withDuration: 0.5))
             let action = SKAction.run {
@@ -333,6 +365,11 @@ public class UI {
         attrString.addAttributes([NSAttributedString.Key.foregroundColor : color, NSAttributedString.Key.font : UIFont.systemFont(ofSize: size, weight: .regular)], range: range)
         return attrString
     }
+    private func fadeIn(_ node: SKNode) -> SKAction{
+        node.alpha = 0.0
+        let sequence = SKAction.sequence([SKAction.fadeIn(withDuration: 1.0)])
+        return sequence
+    }
 }
 extension NSMutableAttributedString {
     @discardableResult func bold(_ text: String) -> NSMutableAttributedString {
@@ -347,4 +384,5 @@ extension NSMutableAttributedString {
         append(normal)
         return self
     }
+    
 }
