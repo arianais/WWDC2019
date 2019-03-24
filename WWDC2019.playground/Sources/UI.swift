@@ -49,11 +49,13 @@ public class UI {
         content.position = CGPoint(x: 0, y: 0)
         scene.addChild(content)
     }
+    //MARK: UI and Narative Functions
+    //set title page: function that sets up the inital view and images
     public func setTitlePage(){
         if(self.superhero != ""){
             DispatchQueue.main.async {
                 let cam = Camera()
-                cam.retrieveImages({ (images) in
+                cam.retrieveImage({ (images) in
                     self.images = images
                     self.mainPic = SKSpriteNode(texture: SKTexture(imageNamed: "Images/pg1"))
                     self.mainPic.setScale(1/3)
@@ -90,14 +92,14 @@ public class UI {
                 self.content.addChild(self.title)
             }
             DispatchQueue.main.async {
-                self.subtitle.attributedText = self.centerAlign("The Amazing \(self.superhero) Vol. 1", 14.0, .white)
+                self.subtitle.attributedText = self.centerAllign("The Amazing \(self.superhero) Vol. 1", 14.0, .white)
                 self.subtitle.preferredMaxLayoutWidth = 400
                 self.subtitle.numberOfLines = 0
                 self.subtitle.position = CGPoint(x: 250, y: 425)
                 self.content.addChild(self.subtitle)
             }
             DispatchQueue.main.async {
-                self.warning.attributedText = self.centerAlign("*This demo contains content relating to suicide, abuse, and violence that may be triggering to others.", 10.0, .white)
+                self.warning.attributedText = self.centerAllign("*This demo contains content relating to suicide, abuse, and violence that may be triggering to others.", 10.0, .white)
                 self.warning.preferredMaxLayoutWidth = 300
                 self.warning.numberOfLines = 0
                 self.warning.position = CGPoint(x: 250, y: 10)
@@ -126,6 +128,7 @@ public class UI {
             }
         }
     }
+    //create picture scene: function that changes the main picture of the scene and does animations for buttons
     func createPictureScene(_ scene: Int){
         DispatchQueue.main.async {
             if(scene == 1){
@@ -136,23 +139,24 @@ public class UI {
                 if(scene == 2 || scene == 4 || scene == 7){
                     self.imageNode.run( SKAction.fadeOut(withDuration: 0.5))
                 } else if self.scene == 3 {
-                    self.imageNode.alpha = 0.0
                     self.imageNode.position = CGPoint(x: 230, y: 335)
                     self.imageNode.setScale((1.0/43))
-                    self.imageNode.run(SKAction.fadeIn(withDuration: 0.5))
+                    self.imageNode.alpha = 0.0
+                    self.imageNode.run(SKAction.fadeIn(withDuration: 1.0))
                 } else if self.scene == 6 {
                     self.imageNode.alpha = 0.0
                     self.imageNode.setScale(1/15)
                     self.imageNode.position = CGPoint(x: 252.5, y:  255)
-                    self.imageNode.run(SKAction.fadeIn(withDuration: 0.5))
+                    self.imageNode.alpha = 0.0
+                    self.imageNode.run(SKAction.fadeIn(withDuration: 1.0))
                 } else if scene == 10 {
                     self.imageNode.alpha = 0.0
                     self.imageNode.position = CGPoint(x: 243, y: 280)
                     self.imageNode.setScale((1.0/54))
-                    self.imageNode.run(SKAction.fadeIn(withDuration: 0.5))
+                    self.imageNode.alpha = 0.0
+                    self.imageNode.run(SKAction.fadeIn(withDuration: 1.0))
                 }
-            
-                    self.mainPic.run(SKAction.sequence([ SKAction.fadeOut(withDuration: 0.5), SKAction.animate(with: [SKTexture(imageNamed: "Images/pg\(scene)")], timePerFrame: 0.0), SKAction.fadeIn(withDuration: 0.5)]))
+                self.mainPic.run(SKAction.sequence([ SKAction.fadeOut(withDuration: 0.5), SKAction.animate(with: [SKTexture(imageNamed: "Images/pg\(scene)")], timePerFrame: 0.0), SKAction.fadeIn(withDuration: 0.5)]))
                 
             }
         }
@@ -177,18 +181,19 @@ public class UI {
           
             if(scene == 1){
                 self.content.run(action)
-               // self.buttonNode.run(SKAction.sequence([SKAction.wait(forDuration: 5.0), SKAction.fadeIn(withDuration: 0.5)]))
             }
             else if(scene != 10) {
                 self.content.run(action)
-                self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.wait(forDuration: self.songTime - 1.0), SKAction.fadeIn(withDuration: 0.5)]))
+                self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.wait(forDuration: self.songTime), SKAction.fadeIn(withDuration: 0.5)]))
             } else {
                 self.bubble.run(SKAction.fadeOut(withDuration: 0.5))
                 self.buttonNode.run(SKAction.fadeOut(withDuration: 0.5))
+                self.buttonNode.removeFromParent()
             }
 
         }
     }
+    //create scene: function that sets chat bot scenes
     func createScene(_ scene: Int){
         for message in messages[scene]{
             let bubble = createChatBubble(message)
@@ -199,6 +204,107 @@ public class UI {
         }
         
     }
+    //next: button function that switches scenes
+    @objc func next(){
+        switch scene {
+        case 0:
+            self.title.run(SKAction.fadeOut(withDuration: 0.5))
+            self.subtitle.run(SKAction.fadeOut(withDuration: 0.5))
+            self.warning.run(SKAction.fadeOut(withDuration: 0.5))
+            self.titlePic.run(SKAction.fadeOut(withDuration: 0.5))
+            
+            let action = SKAction.run {
+                self.songTime = 6.0
+                self.createPictureScene(1)
+                self.content.run(SKAction.playSoundFileNamed("Themes/ironman.mp3", waitForCompletion: false))
+            }
+            self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.wait(forDuration: 5.0), SKAction.fadeIn(withDuration: 0.5)]))
+            self.content.run(SKAction.sequence([SKAction.wait(forDuration: 0.5), action]))
+        case 1:
+            self.songTime = 4.0
+            self.createPictureScene(2)
+            self.content.run(SKAction.playSoundFileNamed("Themes/avengers.mp3", waitForCompletion: false))
+        case 2:
+            self.songTime = 3.0
+            self.createPictureScene(3)
+            self.content.run(SKAction.playSoundFileNamed("Themes/superman.mp3", waitForCompletion: false))
+        case 3:
+            self.songTime = 5.0
+            self.createPictureScene(4)
+            self.content.run(SKAction.playSoundFileNamed("Themes/thortheme.m4a", waitForCompletion: false))
+        case 4:
+            self.songTime = 3.0
+            self.createPictureScene(5)
+            self.content.run(SKAction.playSoundFileNamed("Themes/spiderman.mp3", waitForCompletion: false))
+        case 5:
+            self.songTime = 3.0
+            self.createPictureScene(6)
+            self.content.run(SKAction.playSoundFileNamed("Themes/batman.mp3", waitForCompletion: false))
+        case 7:
+            self.songTime = 3.0
+            self.createPictureScene(7)
+            self.content.run(SKAction.playSoundFileNamed("Sounds/sparkle.mp3", waitForCompletion: false))
+        case 8:
+            self.bubble.run(SKAction.fadeOut(withDuration: 0.5))
+            self.mainPic.run(SKAction.fadeOut(withDuration: 0.5))
+            for msg in self.msgs {
+                msg.run(SKAction.fadeOut(withDuration: 0.5))
+            }
+            self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.wait(forDuration: 12.0), SKAction.fadeIn(withDuration: 0.5)]))
+            let action = SKAction.run {
+                self.time = 0.0
+                self.createChatWindow()
+                self.createScene(0)
+            }
+            self.content.run(SKAction.sequence([SKAction.wait(forDuration: 0.5), action]))
+            msgs = []
+        case 9:
+            for msg in self.msgs {
+                msg.run(SKAction.fadeOut(withDuration: 0.5))
+            }
+            self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.wait(forDuration: 12.0), SKAction.fadeIn(withDuration: 0.5)]))
+            let action = SKAction.run {
+                self.time = 0.0
+                self.createScene(1)
+            }
+            self.content.run(SKAction.sequence([SKAction.wait(forDuration: 0.5), action]))
+            msgs = []
+        case 10:
+            for msg in self.msgs {
+                msg.run(SKAction.fadeOut(withDuration: 0.5))
+            }
+            let action = SKAction.run {
+                self.time = 0.0
+                self.createScene(2)
+            }
+            self.content.run(SKAction.sequence([SKAction.wait(forDuration: 0.5), action]))
+            msgs = []
+        case 11:
+            for msg in self.msgs {
+                msg.run(SKAction.fadeOut(withDuration: 0.5))
+            }
+            self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.wait(forDuration: 8), SKAction.fadeIn(withDuration: 0.5)]))
+            
+            self.border.run(SKAction.fadeOut(withDuration: 0.5))
+            let action = SKAction.run {
+                self.songTime = 15.0
+                self.createPictureScene(8)
+                self.content.run(SKAction.playSoundFileNamed("Themes/incredibles.mp3", waitForCompletion: false))
+            }
+            self.content.run(SKAction.sequence([SKAction.wait(forDuration: 0.5), action]))
+        case 12:
+            self.songTime = 15.0
+            self.createPictureScene(9)
+            self.content.run(SKAction.playSoundFileNamed("Themes/captianamerica.mp3", waitForCompletion: false))
+        case 13:
+            self.createPictureScene(10)
+        default:
+            break
+        }
+        scene += 1
+    }
+    //MARK: Chatbot Functions
+    //create chat window: function that creates chat windows for the chat bot scenes
     func createChatWindow(){
         DispatchQueue.main.async {
             self.border = SKShapeNode(rect: CGRect(x: 100, y: 15, width: 300, height: 470) , cornerRadius: 15)
@@ -207,6 +313,7 @@ public class UI {
             self.content.addChild(self.border)
         }
     }
+    //create chat bubble: function that creates the messaging bubbles for the chat bot
     func createChatBubble(_ msg: Message) -> SKNode{
         let textLb = SKLabelNode(fontNamed: UIFont.systemFont(ofSize: 12.0, weight: .regular).fontName)
         textLb.fontSize = 12.0
@@ -258,106 +365,9 @@ public class UI {
         self.content.addChild(chatBubble)
         return chatBubble
     }
-    @objc func next(){
-        switch scene {
-        case 0:
-            self.title.run(SKAction.fadeOut(withDuration: 0.5))
-            self.subtitle.run(SKAction.fadeOut(withDuration: 0.5))
-            self.warning.run(SKAction.fadeOut(withDuration: 0.5))
-            self.titlePic.run(SKAction.fadeOut(withDuration: 0.5))
-            
-            let action = SKAction.run {
-                self.songTime = 6.0
-                self.createPictureScene(1)
-                self.content.run(SKAction.playSoundFileNamed("Themes/ironman.mp3", waitForCompletion: false))
-            }
-            self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.wait(forDuration: 4.0), SKAction.fadeIn(withDuration: 0.5)]))
-            self.content.run(SKAction.sequence([SKAction.wait(forDuration: 0.5), action]))
-        case 1:
-            self.songTime = 4.0
-            self.createPictureScene(2)
-            self.content.run(SKAction.playSoundFileNamed("Themes/avengers.mp3", waitForCompletion: false))
-        case 2:
-            self.songTime = 3.0
-            self.createPictureScene(3)
-            self.content.run(SKAction.playSoundFileNamed("Themes/superman.mp3", waitForCompletion: false))
-        case 3:
-            self.songTime = 3.0
-            self.createPictureScene(4)
-            self.content.run(SKAction.playSoundFileNamed("Themes/mulan.mp3", waitForCompletion: false))
-        case 4:
-            self.songTime = 3.0
-            self.createPictureScene(5)
-            self.content.run(SKAction.playSoundFileNamed("Themes/spiderman.mp3", waitForCompletion: false))
-        case 5:
-            self.songTime = 3.0
-            self.createPictureScene(6)
-            self.content.run(SKAction.playSoundFileNamed("Themes/batman.mp3", waitForCompletion: false))
-        case 7:
-            self.songTime = 3.0
-            self.createPictureScene(7)
-            self.content.run(SKAction.playSoundFileNamed("Sounds/sparkle.mp3", waitForCompletion: false))
-        case 8:
-            self.bubble.run(SKAction.fadeOut(withDuration: 0.5))
-            self.mainPic.run(SKAction.fadeOut(withDuration: 0.5))
-            for msg in self.msgs {
-                msg.run(SKAction.fadeOut(withDuration: 0.5))
-            }
-            self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.wait(forDuration: 12.0), SKAction.fadeIn(withDuration: 0.5)]))
-            let action = SKAction.run {
-                self.time = 0.0
-                self.createChatWindow()
-                self.createScene(0)
-            }
-            self.content.run(SKAction.sequence([SKAction.wait(forDuration: 0.5), action]))
-            msgs = []
-        case 9:
-            for msg in self.msgs {
-                msg.run(SKAction.fadeOut(withDuration: 0.5))
-            }
-            self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.wait(forDuration: 12.0), SKAction.fadeIn(withDuration: 0.5)]))
-            let action = SKAction.run {
-                self.time = 0.0
-                self.createScene(1)
-            }
-            self.content.run(SKAction.sequence([SKAction.wait(forDuration: 0.5), action]))
-            msgs = []
-        case 10:
-            for msg in self.msgs {
-                msg.run(SKAction.fadeOut(withDuration: 0.5))
-            }
-            self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.wait(forDuration: 12.0), SKAction.fadeIn(withDuration: 0.5)]))
-            let action = SKAction.run {
-                self.time = 0.0
-                self.createScene(2)
-            }
-            self.content.run(SKAction.sequence([SKAction.wait(forDuration: 0.5), action]))
-            msgs = []
-        case 11:
-            for msg in self.msgs {
-                msg.run(SKAction.fadeOut(withDuration: 0.5))
-            }
-            self.buttonNode.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.wait(forDuration: 0.5), SKAction.fadeIn(withDuration: 0.5)]))
-            
-            self.border.run(SKAction.fadeOut(withDuration: 0.5))
-            let action = SKAction.run {
-                self.songTime = 8.0
-                self.createPictureScene(8)
-                self.content.run(SKAction.playSoundFileNamed("Themes/incredibles.mp3", waitForCompletion: false))
-            }
-            self.content.run(SKAction.sequence([SKAction.wait(forDuration: 0.5), action]))
-        case 12:
-            self.songTime = 8.0
-            self.createPictureScene(9)
-            self.content.run(SKAction.playSoundFileNamed("Themes/captianamerica.mp3", waitForCompletion: false))
-        case 13:
-            self.createPictureScene(10)
-        default:
-            break
-        }
-        scene += 1
-    }
-    private func centerAlign(_ string: String, _ size: CGFloat, _ color: UIColor) -> NSAttributedString{
+    //MARK: Utility Functions
+    //center allign function that center alligns text of SKLabel Nodes
+    private func centerAllign(_ string: String, _ size: CGFloat, _ color: UIColor) -> NSAttributedString{
         let attrString = NSMutableAttributedString(string: string)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
@@ -365,11 +375,6 @@ public class UI {
         attrString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: range)
         attrString.addAttributes([NSAttributedString.Key.foregroundColor : color, NSAttributedString.Key.font : UIFont.systemFont(ofSize: size, weight: .regular)], range: range)
         return attrString
-    }
-    private func fadeIn(_ node: SKNode) -> SKAction{
-        node.alpha = 0.0
-        let sequence = SKAction.sequence([SKAction.fadeIn(withDuration: 1.0)])
-        return sequence
     }
 }
 extension NSMutableAttributedString {

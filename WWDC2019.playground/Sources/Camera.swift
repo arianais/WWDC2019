@@ -1,5 +1,5 @@
-
 //  Welcome to the brains of the image handeling. You do not want to edit this file. Back away slowly and no harm will come to your playground :).
+
 import Foundation
 import UIKit
 import PlaygroundSupport
@@ -12,25 +12,9 @@ public class Camera{
     private let faceDetectionRequest = VNSequenceRequestHandler()
     public init(){
     }
-    //retreive images: retrieves cropped images of the faces contained in the first two images in the resources folder
-    public func retrieveImages(_ completion: @escaping([UIImage]) -> Void){
-        var images: [UIImage] = []
-        var path = Bundle.main.paths(forResourcesOfType: "png", inDirectory: nil)
-        path.append(contentsOf: Bundle.main.paths(forResourcesOfType: "jpg", inDirectory: nil))
-        let image = path[0]
-        var i = image.count - 5
-        var c = image.index(image.startIndex, offsetBy: i)
-        var name = ""
-        while (image[c] != "/") {
-            name = "\(image[c])" + name
-            i -= 1
-            c = image.index(image.startIndex, offsetBy: i)
-        }
-        print("NAME ", name)
+    //retreive image: retrieves cropped image of the faces contained in the first two images in the resources folder
+    public func retrieveImage(_ completion: @escaping([UIImage]) -> Void){
         self.detectFace(image: UIImage(named: "agent.png")!, { (pic) in
-            if(pic != nil){
-                print("HAS PIC")
-            }
             completion([pic])
         })
     }
