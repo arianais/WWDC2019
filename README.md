@@ -4,7 +4,7 @@
  ## Superhero Training
 In this playground, a coder is taken through a narrative where they become part of the Appvengers -- a secret team of elite technical superheroes determined to use their powers to improve the world with technology. This superhero, or coder, must now complete a training mission where they are tasked with creating a technological solution to help those in mental health crises. 
 
-![Demo Picture](https://github.com/arianais/WWDC2018/blob/master/WWDC2019%20Git.playground/Resources/Images/readme.png)
+![Demo Picture](https://github.com/arianais/WWDC2019/blob/master/WWDC2019.playground/Resources/Images/readme.png)
  
 ## Credits
  
