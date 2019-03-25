@@ -2,7 +2,7 @@
  **This playground was created to teach budding creators how to code and design technology with meaningful social impact by creating a chatbot that refers people in mental health crises to support resources.** Using creative problem solving, students are taught how to use technologies like Machine Learning to address problems and affect change for their communities.
  
  ## Superhero Training
-In this playground, a coder is taken through a narrative where they become part of the Appvengers -- a secret team of elite technical superheroes determined to use their powers to improve the world with technology. This superhero, or coder, must complete a training message where they are tasked with creating a technological solution to help those in mental health crises. 
+In this playground, a coder is taken through a narrative where they become part of the Appvengers -- a secret team of elite technical superheroes determined to use their powers to improve the world with technology. This superhero, or coder, must now complete a training mission where they are tasked with creating a technological solution to help those in mental health crises. 
 
 ![Demo Picture](https://github.com/arianais/WWDC2018/blob/master/WWDC2019%20Git.playground/Resources/Images/readme.png)
  
